@@ -9,3 +9,7 @@ I am setting up my enironment slightly differently because of my setup. Here's h
   2. Using miniconda instead of Anaconda - Anaconda feels bloated to me. Following instructions here: https://www.atlantic.net/dedicated-server-hosting/how-to-install-miniconda-on-ubuntu-22-04/
   3. Docker usage is through Docker Desktop and WSL2 Integration: https://docs.docker.com/desktop/features/wsl/
   4. For python package management, I chose to use `uv` instead of fully using conda. (https://medium.com/codefile/. uv-or-conda-for-virtual-environments-7372a258c7d5). I will still be using conda for making sure system dependencies are met, but for python dependencies, I will  be using uv.
+
+# VS Code Setup
+I am also using VSCode as my editor. Using these plugins specifically for this project:
+  1. Jupyter
