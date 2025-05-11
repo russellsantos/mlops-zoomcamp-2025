@@ -24,11 +24,8 @@ def clean_and_calculate_fields(df):
     #df = df[(df.duration >= 1) & (df.duration <= 24*60)]
 
     categorical = ['PULocationID', 'DOLocationID']
-    numerical = ['trip_distance']
 
     df[categorical] = df[categorical].astype(str)
-    df[categorical + numerical].to_dict(orient='records')
-
     return df 
 
 def download_data_files(use_cache=True,*args):
