@@ -35,8 +35,9 @@ def run_train(data_path: str):
         rf = RandomForestRegressor(max_depth=max_depth, random_state=random_state)
         rf.fit(X_train, y_train)
         y_pred = rf.predict(X_val)
-
-        rmse = root_mean_squared_error(y_val, y_pred)
+        # squared=False parameter replaced with root_mean_squared_error function in scikit-learn 1.6
+        rmse = root_mean_squared_error(y_val, y_pred) 
+        mlflow.log_metric("val_rmse", rmse)
         print("RMSE ", rmse)
 
 

@@ -38,7 +38,11 @@ This will run the mlflow ui, which is accessible at http://127.0.0.1:5000
 
 ## Training the model
 
-
-
-:w
 `$ uv run homework/train.py --data_path data/processed/`
+
+# Launch the tracking server 
+
+ - Make the directory first
+
+ `
+`$ uv run mflow server --backend-store-uri data/mlflow.db --artifacts-destinataion file://data/artifacts`
