@@ -8,7 +8,7 @@ from pathlib import Path
 READ_BUFFER=1024
 
 EXPERIMENT_TRACKING_FOLDER:Path =Path(__file__).parent.parent
-DATA_DIR:Path =EXPERIMENT_TRACKING_FOLDER.joinpath('data')
+DATA_DIR:Path =EXPERIMENT_TRACKING_FOLDER.joinpath('data/raw')
 
 def download_data_files(data_dir, files):
     print(f"Downloading {files} to {data_dir}")
