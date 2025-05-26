@@ -23,12 +23,14 @@ source = { virtual = "02-experiment-tracking" }
 dependencies = [
     { name = "jupyter" },
     { name = "mlflow" },
+    { name = "scikit-learn" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "jupyter", specifier = ">=1.1.1" },
     { name = "mlflow", specifier = ">=2.22.0" },
+    { name = "scikit-learn", specifier = ">=1.6.1" },
 ]
 
 [[package]]

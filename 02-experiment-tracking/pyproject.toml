@@ -7,4 +7,5 @@ requires-python = ">=3.10"
 dependencies = [
     "jupyter>=1.1.1",
     "mlflow>=2.22.0",
+    "scikit-learn>=1.6.1",
 ]
