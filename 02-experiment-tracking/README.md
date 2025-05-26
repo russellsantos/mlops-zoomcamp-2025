@@ -46,3 +46,9 @@ This will run the mlflow ui, which is accessible at http://127.0.0.1:5000
 
 `$ mkdir -p .data/artifacts`
 `$ uv run mflow server --backend-store-uri data/mlflow.db --artifacts-destination file://data/artifacts`
+
+# Hyperparameter Tuning
+
+## running the tuning
+
+`$ uv run homework/hpo.py --data_path data/processed`
