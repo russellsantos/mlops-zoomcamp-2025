@@ -26,7 +26,7 @@ As of 2205-06-09, we see
 ```
 We'll also want to use the following packages
 ```
-$ uv add pandas fastparquet
+$ uv add pandas fastparquet scikit-learn 
 ```
 ## Step 2: Setup Initial data load
 Source: https://dagster.io/blog/thinking-in-assets
@@ -44,7 +44,30 @@ $ touch data/.gitkeep
 ```
 This will create the `data` and the `raw` directory, and make usre that these are kept by git even if they are empty
 
+Then to run the asset pipeline
+`$ dagster dev -f dagster-pipeline/assets.py ` 
+
+Go to the UI and materialize the `raw_data` asset.
+Alternatively, run the following command:
+
+`$ dagster asset materialize -f dagster-pipeline/assets.py --select raw_data`
+
 ## Step 3: Preprocessing
 
-Before running the code
- - Created the `raw_data` assets
+Before running the code, create the necessary directories.
+
+```
+$ mkdir -p data/processed 
+$ touch data/processed/.gitkeep
+```
+
+Then Go to the UI and materialize `preprocesed_data`, or run:
+`$ dagster asset materialize -f dagster-pipeliune/assets.py --select preprocessed_data`
+
+## Step 4: Train model
+Source: https://docs.dagster.io/guides/build/ml-pipelines/ml-pipeline
+
+Run in UI or run:
+`$ dagster asset materialize -f dagster-pipeline/assets.py --select dict_vectorizer,X_train,Y_train,trained_model`
+
+## Step 5: Register model in MLFLow

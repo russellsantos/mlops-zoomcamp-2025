@@ -4,10 +4,20 @@ import pandas as pd
 import urllib
 import urllib.request
 import os
+import sys
 import logging
+from sklearn.feature_extraction import DictVectorizer
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import root_mean_squared_error
 
-
+logging.basicConfig(
+    level=logging.INFO, 
+    stream=sys.stdout,
+    format="%(asctime)s - %(name)s - %(levelname)s: %(message)s ",
+    datefmt="%Y-%m-%d %H:%M:%S %z",
+)
 logger= logging.getLogger(__name__)
+
 
 READ_BUFFER=1024
 ORCHESTRATION_FOLDER:Path =Path(__file__).parent.parent
@@ -67,6 +77,58 @@ def preprocessed_data():
             "column_count": df.shape[1],
         }
     )
+@dg.multi_asset(
+    deps=[preprocessed_data],
+    outs={
+        "dict_vectorizer": dg.AssetOut(),
+        "X_train": dg.AssetOut(),
+        "Y_train": dg.AssetOut(),
+    }
+)
+def training_data():
+    df = pd.read_parquet(PREPROCESSED_DATA)
+    dv = DictVectorizer()
+    dicts = df[['PULocationID','DOLocationID']].to_dict(orient='records')
+    X_train = dv.fit_transform(dicts)
+    Y_train = df['duration']
 
-defs = dg.Definitions(assets=[raw_data, preprocessed_data])
+    return ( dg.Output(
+                value=dv,
+                metadata={
+                    "feature_names": dv.feature_names_,
+                }
+            ),
+            dg.Output(
+                value=X_train,
+                metadata={
+                    "dagster/row_count": X_train.shape[0],
+                    "column_count": X_train.shape[1],
+                },
+            ),
+            dg.Output(
+                value=Y_train, 
+                metadata={
+                    "dagster/row_count": Y_train.shape[0],
+                    "column_count": 1,
+                }
+            )
+    )
+
+@dg.asset
+def trained_model(X_train, Y_train):
+    lr = LinearRegression()
+    lr.fit(X_train,Y_train) 
+    logger.info(f"Model intercept {lr.intercept_}")
+    return dg.Output(
+        value=lr,
+        metadata={
+            "model_type": "sklearn.linear_model.LinearRegression",
+            "params": lr.get_params(),
+        },
+    )
+
+    
+    
+
+defs = dg.Definitions(assets=[raw_data, preprocessed_data, training_data, trained_model])
 

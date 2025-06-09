@@ -47,6 +47,7 @@ dependencies = [
     { name = "dagster-webserver" },
     { name = "fastparquet" },
     { name = "pandas" },
+    { name = "scikit-learn" },
 ]
 
 [package.metadata]
@@ -55,6 +56,7 @@ requires-dist = [
     { name = "dagster-webserver", specifier = ">=1.10.19" },
     { name = "fastparquet", specifier = ">=2024.11.0" },
     { name = "pandas", specifier = ">=2.2.3" },
+    { name = "scikit-learn", specifier = ">=1.6.1" },
 ]
 
 [[package]]
