@@ -1,0 +1,2 @@
+.tmp_dagster_home_*
+*.parquet
