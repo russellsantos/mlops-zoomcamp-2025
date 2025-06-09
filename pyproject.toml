@@ -16,4 +16,5 @@ dependencies = [
 [tool.uv.workspace]
 members = [
     "02-experiment-tracking",
+    "03-orchestration",
 ]
