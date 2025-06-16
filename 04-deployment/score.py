@@ -7,7 +7,7 @@ import pandas as pd
 
 
 
-with open('data/model/model.bin', 'rb') as f_in:
+with open('model.bin', 'rb') as f_in:
     dv, model = pickle.load(f_in)
 
 
@@ -27,10 +27,6 @@ def read_data(filename):
     return df
 
 
-# In[6]:
-
-
-
 
 
 def run(year, month):
@@ -42,7 +38,7 @@ def run(year, month):
     print(f"Mean predicted duration: {y_pred.mean()}")
     df['ride_id'] = f'{year:04d}/{month:02d}_' + df.index.astype('str')
     df.head()
-    output_file='data/output/output.parquet'
+    output_file='output.parquet'
     df_result = df[['ride_id']].copy()
     df_result['predicted_duration']=y_pred
     df_result.to_parquet(
