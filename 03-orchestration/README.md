@@ -26,8 +26,9 @@ As of 2205-06-09, we see
 ```
 We'll also want to use the following packages
 ```
-$ uv add pandas fastparquet scikit-learn 
+$ uv add pandas fastparquet scikit-learn mlflow "flask>=2.2.2"
 ```
+*Note: we need Flask >=2.2.2 otherwise, running the mlflow server will cause a "cannot import name 'escape' from 'jinja2'" error. (See https://stackoverflow.com/questions/71718167/importerror-cannot-import-name-escape-from-jinja2)
 ## Step 2: Setup Initial data load
 Source: https://dagster.io/blog/thinking-in-assets
 
@@ -71,3 +72,6 @@ Run in UI or run:
 `$ dagster asset materialize -f dagster-pipeline/assets.py --select dict_vectorizer,X_train,Y_train,trained_model`
 
 ## Step 5: Register model in MLFLow
+
+Run MLFlow server first
+`% uv run mlflow server --backend-store-uri sqlite:///data/mlflow.db --default-artifact-root file:///data/models

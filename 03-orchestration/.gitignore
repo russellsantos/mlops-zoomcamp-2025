@@ -1,2 +1,4 @@
 .tmp_dagster_home_*
 *.parquet
+data/models
+mlruns/*

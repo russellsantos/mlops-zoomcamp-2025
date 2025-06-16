@@ -1,5 +1,7 @@
 import dagster as dg 
 from pathlib import Path 
+import pickle
+import mlflow
 import pandas as pd
 import urllib
 import urllib.request
@@ -17,6 +19,11 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S %z",
 )
 logger= logging.getLogger(__name__)
+
+EXPERIMENT_NAME='HW_03_YELLOW_TAXI_DURATION_PREDICTION'
+mlflow.set_tracking_uri("http://127.0.0.1:5000")# we'll want to move this to a resource in dagster
+mlflow.set_experiment(EXPERIMENT_NAME)
+mlflow.sklearn.autolog()
 
 
 READ_BUFFER=1024
@@ -77,48 +84,43 @@ def preprocessed_data():
             "column_count": df.shape[1],
         }
     )
-@dg.multi_asset(
-    deps=[preprocessed_data],
-    outs={
-        "dict_vectorizer": dg.AssetOut(),
-        "X_train": dg.AssetOut(),
-        "Y_train": dg.AssetOut(),
-    }
-)
+
 def training_data():
     df = pd.read_parquet(PREPROCESSED_DATA)
     dv = DictVectorizer()
-    dicts = df[['PULocationID','DOLocationID']].to_dict(orient='records')
+    dicts = df[['PULocationID','DOLocationID','trip_distance']].to_dict(orient='records')
     X_train = dv.fit_transform(dicts)
     Y_train = df['duration']
 
-    return ( dg.Output(
-                value=dv,
-                metadata={
-                    "feature_names": dv.feature_names_,
-                }
-            ),
-            dg.Output(
-                value=X_train,
-                metadata={
-                    "dagster/row_count": X_train.shape[0],
-                    "column_count": X_train.shape[1],
-                },
-            ),
-            dg.Output(
-                value=Y_train, 
-                metadata={
-                    "dagster/row_count": Y_train.shape[0],
-                    "column_count": 1,
-                }
-            )
-    )
+    return dv, X_train, Y_train 
 
-@dg.asset
-def trained_model(X_train, Y_train):
-    lr = LinearRegression()
-    lr.fit(X_train,Y_train) 
-    logger.info(f"Model intercept {lr.intercept_}")
+def dump(obj, path):
+    with open(path, "wb") as f_out:
+        pickle.dump(obj, f_out)
+
+PREPROCESSOR_PATH=f"{DATA_DIR}/models/preprocessor.pkl"
+
+@dg.asset(deps=[preprocessed_data])
+def trained_model():
+    dv, X_train, Y_train = training_data()
+
+    with mlflow.start_run():
+        logger.info(f"Training model")
+        lr = LinearRegression()
+        lr.fit(X_train,Y_train) 
+        params = lr.get_params()
+        logger.info("Model trained")
+        mlflow.log_params(params)
+        dump(dv,PREPROCESSOR_PATH)
+
+        mlflow.log_artifact(PREPROCESSOR_PATH, "preprocessor.pkl")
+        mlflow.sklearn.log_model(
+            sk_model=lr,
+            artifact_path='sklearn-duration-prediction',
+            registered_model_name='sklearn-linear-reg-model',
+        )
+        logger.info("Model registered")
+        logger.info(f"Model intercept {lr.intercept_}")
     return dg.Output(
         value=lr,
         metadata={
@@ -130,5 +132,5 @@ def trained_model(X_train, Y_train):
     
     
 
-defs = dg.Definitions(assets=[raw_data, preprocessed_data, training_data, trained_model])
+defs = dg.Definitions(assets=[raw_data, preprocessed_data, trained_model])
 

@@ -8,6 +8,7 @@ dependencies = [
     "fastparquet>=2024.11.0",
     "jupyter>=1.1.1",
     "matplotlib>=3.10.3",
+    "mlflow>=2.22.0",
     "pandas>=2.2.3",
     "scikit-learn>=1.6.1",
     "seaborn>=0.13.2",
