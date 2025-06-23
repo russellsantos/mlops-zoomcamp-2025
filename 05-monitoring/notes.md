@@ -92,5 +92,9 @@ Some notes on the packages
           - count -how many are the drifted columns
           - share -% of columns drifted( according to threshold).
      - MissingValueCount() - there to compare missing values across the data sets.
-## Evidently Dashboard
+## 5.5 Evidently Dashboard
  - The dashboard seems to be there to allow you to generate reports and metrics for each dataset, and then be able to see the progression over time. This seems to be better for cases where you have non-batch inference. 
+
+
+ # 5.6 Dummy Monitoring 
+  - 
