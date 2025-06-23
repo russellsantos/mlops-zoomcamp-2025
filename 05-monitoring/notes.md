@@ -74,3 +74,23 @@ Some notes on the packages
 
  1. http://localhost:8080 - you should see the adminer page. Login using the user `postgres` and the password you set in the POSTGRES_PASSWORD environment variable in the docker-compose ifle.
  2. http://localhost:300 - you shoud see the grafana page. You can log-in using the defautl username (`admin`) and password (`admin`). Grafana should ask you to change the password.
+
+ # Prepare and Reference Model
+
+  - It seems that the code is working off of an older version of evidently. so we need to use `evidently.legacy` for the packages.
+  - also need to create the `./data/` folder
+  - also had to add the matplotlib package, otherwise `.hist()` on the dataframe wouldn't work.
+  - had to add the `./model/` folder
+  - NOTE: nevermid  on the legacy stuff. There was an updated notebook on evidently post 0.7. Using that.
+## Evidently Report
+  - It looks like we're keeping the validation data as the reference data- this will probably be uesd for comparison to future data sets later on
+  - The `DataDefinition` object just specifies the types of the columns (muerical or categorical features)
+  - the Dataset object seems to just be the pandas dataframe combined with the DataDefinition
+  - you create a Report object which defines what will be checked. It will need a list of `metrics`. So far we used the following:
+     - ValueDrift - for specifying when the distribution of values has changed between reference and current. This seems to be using the [Wassertein metric](https://en.wikipedia.org/wiki/Wasserstein_metric). You will need to specify the columns to check. In this case, we only asked it to look at the prediction column - so this is actually tryin to detect [Prediction Drift](https://www.evidentlyai.com/ml-in-production/data-drift#data-drift-vs-prediction-drift)
+     - DriftedColumnsCount - seems to run some sort of drift metric on all columns. Report shows two values
+          - count -how many are the drifted columns
+          - share -% of columns drifted( according to threshold).
+     - MissingValueCount() - there to compare missing values across the data sets.
+## Evidently Dashboard
+ - The dashboard seems to be there to allow you to generate reports and metrics for each dataset, and then be able to see the progression over time. This seems to be better for cases where you have non-batch inference. 
