@@ -18,4 +18,5 @@ dependencies = [
 members = [
     "02-experiment-tracking",
     "03-orchestration",
+    "05-monitoring",
 ]
