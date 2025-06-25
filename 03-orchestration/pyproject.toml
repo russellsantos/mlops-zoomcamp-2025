@@ -1,5 +1,5 @@
 [project]
-name = "03-orchestration"
+name = "mlops-zoomcamp-2025-03-orchestration"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
