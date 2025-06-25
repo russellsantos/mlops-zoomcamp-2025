@@ -12,29 +12,10 @@ resolution-markers = [
 
 [manifest]
 members = [
-    "02-experiment-tracking",
     "03-orchestration",
     "05-monitoring",
+    "mlops-zoomcamp-02-experiment-tracking",
     "mlops-zoomcamp-2025",
-]
-
-[[package]]
-name = "02-experiment-tracking"
-version = "0.1.0"
-source = { virtual = "02-experiment-tracking" }
-dependencies = [
-    { name = "hyperopt" },
-    { name = "jupyter" },
-    { name = "mlflow" },
-    { name = "scikit-learn" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "hyperopt", specifier = ">=0.2.7" },
-    { name = "jupyter", specifier = ">=1.1.1" },
-    { name = "mlflow", specifier = ">=2.22.0" },
-    { name = "scikit-learn", specifier = ">=1.6.1" },
 ]
 
 [[package]]
@@ -2268,6 +2249,25 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/16/1e/7d29817fa2370f88550e86ae2be4bee5f9efe82169032dc5b1cab642e5b6/mlflow_skinny-2.22.0.tar.gz", hash = "sha256:774b58970038990650486cd934d46b7038fc390682c3bde70b4e5106f6857cce", size = 5889903, upload-time = "2025-04-24T08:24:27.876Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f4/eb/53dd2a5db1040a21da2980c382ebe3a9bda2d8af8365c2d01053c924b150/mlflow_skinny-2.22.0-py3-none-any.whl", hash = "sha256:9efc39454f6cc3433e7d804c3df8dab4fbba1abe504c52c05f00ef1d0696fef5", size = 6268849, upload-time = "2025-04-24T08:24:25.487Z" },
+]
+
+[[package]]
+name = "mlops-zoomcamp-02-experiment-tracking"
+version = "0.1.0"
+source = { virtual = "02-experiment-tracking" }
+dependencies = [
+    { name = "hyperopt" },
+    { name = "jupyter" },
+    { name = "mlflow" },
+    { name = "scikit-learn" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "hyperopt", specifier = ">=0.2.7" },
+    { name = "jupyter", specifier = ">=1.1.1" },
+    { name = "mlflow", specifier = ">=2.22.0" },
+    { name = "scikit-learn", specifier = ">=1.6.1" },
 ]
 
 [[package]]

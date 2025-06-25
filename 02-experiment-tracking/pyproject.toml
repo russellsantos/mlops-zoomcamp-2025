@@ -1,5 +1,5 @@
 [project]
-name = "02-experiment-tracking"
+name = "mlops-zoomcamp-02-experiment-tracking"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
