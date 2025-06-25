@@ -21,3 +21,5 @@ Video: [Testing Python code with pytest](https://www.youtube.com/watch?v=CJp1eFQ
  - Since the streaming project use pipenv, I will use pipenv, instead of using uv for this. Howevever, it seems i have to install pipenv through pipx. 
  - running `pipenv install` is running into an issue. Since I already have an active venv because of uv, pipenv just wants to reuse the same evironment created by uv. I am asking it to create its own by setting ` PIPENV_IGNORE_VIRTUALENVS=1` and then `export PIPENV_IGNORE_VIRTUALENVS`. This seems to have worked.
  - also need to to install pyenv separately.
+ - note that i set things up so that each module has separated environments. it was becomeing untenable to use the workspaces feature in uv. 
+ - also, I think i need to recreate a model file since downloading it from s3 isn't workable. I'll work on that next.

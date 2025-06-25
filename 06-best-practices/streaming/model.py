@@ -3,6 +3,9 @@ import os
 import json
 import boto3
 import base64
+import logging 
+
+logger = logging.getLogger(__name__)
 
 import mlflow
 def base64_decode(encoded_data):
@@ -78,6 +81,7 @@ class KinesisCallback:
 def init(predictions_stream_name: str, run_id: str, test_run: bool):
     # Load the model
     logged_model = f's3://mlflow-models-alexey/1/{run_id}/artifacts/model'
+    logger.info(f"Loading model from {logged_model}")
     model = mlflow.pyfunc.load_model(logged_model)
     callbacks = []
     if test_run:
